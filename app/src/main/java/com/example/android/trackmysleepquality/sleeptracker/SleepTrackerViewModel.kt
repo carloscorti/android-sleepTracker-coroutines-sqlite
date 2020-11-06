@@ -41,6 +41,24 @@ class SleepTrackerViewModel(
         }
     }
 
+
+    fun stopSleepTrack() {
+        coroutineScope.launch {
+//            val nightReq = async { requireNotNull(getTonight()) }
+//            val night = nightReq.await()
+            // here getTonight is run in Default Threat
+//            val night = withContext(Dispatchers.Default) { requireNotNull(getTonight()) }
+            // the above same as next line
+            val night = withContext(this.coroutineContext) { getTonight() }
+
+            if (night!=null && night.startTimeMilli == night.endTimeMilli) {
+                night.endTimeMilli = System.currentTimeMillis()
+                update(night)
+            }
+        }
+    }
+
+
     private suspend fun getTonight(): SleepNight? =
             withContext(Dispatchers.IO) {
                 val toNight = database.getTonight()
@@ -50,6 +68,11 @@ class SleepTrackerViewModel(
     private suspend fun insert(night: SleepNight) =
             withContext(Dispatchers.IO) {
                 database.insert(night)
+            }
+
+    private suspend fun update(nigh: SleepNight) =
+            withContext(Dispatchers.IO) {
+                database.update(nigh)
             }
 
 
