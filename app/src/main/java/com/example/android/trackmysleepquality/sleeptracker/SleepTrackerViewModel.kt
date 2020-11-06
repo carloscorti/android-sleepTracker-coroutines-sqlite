@@ -50,7 +50,6 @@ class SleepTrackerViewModel(
         }
     }
 
-
     fun stopSleepTrack() {
         coroutineScope.launch {
 //            val nightReq = async { requireNotNull(getTonight()) }
@@ -64,6 +63,12 @@ class SleepTrackerViewModel(
                 night.endTimeMilli = System.currentTimeMillis()
                 update(night)
             }
+        }
+    }
+
+    fun clearSleepsNights() {
+        coroutineScope.launch {
+            clearDataBaseNights()
         }
     }
 
@@ -82,6 +87,11 @@ class SleepTrackerViewModel(
     private suspend fun update(nigh: SleepNight) =
             withContext(Dispatchers.IO) {
                 database.update(nigh)
+            }
+
+    private suspend fun clearDataBaseNights() =
+            withContext(Dispatchers.IO) {
+                database.clear()
             }
 
 
