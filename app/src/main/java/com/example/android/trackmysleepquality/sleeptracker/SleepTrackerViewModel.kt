@@ -19,6 +19,7 @@ package com.example.android.trackmysleepquality.sleeptracker
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
@@ -40,6 +41,14 @@ class SleepTrackerViewModel(
         formatNights(nightsList, application.resources)
     }
 
+    private val _startBtnVisible = MutableLiveData<Boolean>()
+    val startBtnVisible: LiveData<Boolean>
+        get() = _startBtnVisible
+
+    init {
+        _startBtnVisible.value = true
+    }
+
     fun startSleepTrack() {
 //        viewModelScope.launch {
 //            insert(SleepNight())
@@ -48,6 +57,7 @@ class SleepTrackerViewModel(
             val night = withContext(this.coroutineContext) { getTonight() }
             if (night == null || (night.startTimeMilli != night.endTimeMilli)) insert(SleepNight())
         }
+        _startBtnVisible.value = false
     }
 
     fun stopSleepTrack() {
@@ -63,6 +73,7 @@ class SleepTrackerViewModel(
                 night.endTimeMilli = System.currentTimeMillis()
                 update(night)
             }
+            _startBtnVisible.value = true
         }
     }
 
