@@ -88,6 +88,15 @@ class SleepTrackerViewModel(
         }
     }
 
+    fun updateSleepQuality(quality: Int) {
+        coroutineScope.launch {
+            val night = withContext(this.coroutineContext) { getTonight() }
+            if (night == null || night.startTimeMilli == night.endTimeMilli) return@launch
+            night.sleepQuality = quality
+            update(night)
+        }
+    }
+
 
     private suspend fun getTonight(): SleepNight? =
             withContext(Dispatchers.IO) {
