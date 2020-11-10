@@ -35,17 +35,27 @@ class SleepTrackerViewModel(
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
+    val navigateToSleepQuality: LiveData<SleepNight>
+        get() = _navigateToSleepQuality
+
+    private var tonight = MutableLiveData<SleepNight?>()
+
     private var _allNights: LiveData<List<SleepNight>> = database.getAllNights()
 
     var allNights = Transformations.map(_allNights) { nightsList ->
         formatNights(nightsList, application.resources)
     }
 
-    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
-    val navigateToSleepQuality: LiveData<SleepNight>
-        get() = _navigateToSleepQuality
-
-    private var tonight = MutableLiveData<SleepNight?>()
+    val startButtonVisible = Transformations.map(tonight) {
+        null == it
+    }
+    val stopButtonVisible = Transformations.map(tonight) {
+        null != it
+    }
+    val clearButtonVisible = Transformations.map(_allNights) {
+        it.isNotEmpty()
+    }
 
     init {
         initializeTonight()

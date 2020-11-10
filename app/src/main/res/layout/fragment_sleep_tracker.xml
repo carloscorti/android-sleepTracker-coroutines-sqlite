@@ -78,6 +78,7 @@
             android:layout_marginEnd="16dp"
             android:onClick="@{()->sleepTrackerViewModel.startSleepTrack()}"
             android:text="@string/start"
+            android:enabled="@{sleepTrackerViewModel.startButtonVisible}"
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,6 +94,7 @@
             android:layout_marginEnd="@dimen/margin"
             android:onClick="@{()->sleepTrackerViewModel.stopSleepTrack()}"
             android:text="@string/stop"
+            android:enabled="@{sleepTrackerViewModel.stopButtonVisible}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
             app:layout_constraintTop_toTopOf="parent" />
@@ -106,6 +108,7 @@
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginBottom="@dimen/margin"
             android:text="@string/clear"
+            android:enabled="@{sleepTrackerViewModel.clearButtonVisible}"
             android:onClick="@{()->sleepTrackerViewModel.clearSleepsNights()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
