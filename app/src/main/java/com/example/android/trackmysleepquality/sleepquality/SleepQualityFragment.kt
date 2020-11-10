@@ -23,7 +23,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityBinding
@@ -55,7 +57,7 @@ class SleepQualityFragment : Fragment() {
         var db = SleepDatabase.getInstance(application)
 
         val nightId = SleepQualityFragmentArgs.fromBundle(requireArguments()).sleepNightKey
-        Toast.makeText(context, "night id is $nightId", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "night id is $nightId", Toast.LENGTH_SHORT).show()
 
         sleepQualityViewModelFactory = SleepQualityViewModelFactory(nightId, db.sleepDatabaseDao)
         sleepQualityViewModel = ViewModelProvider(this, sleepQualityViewModelFactory)
@@ -64,6 +66,13 @@ class SleepQualityFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.sleepQualityViewModel = sleepQualityViewModel
+
+        sleepQualityViewModel.navigateToSleepTracker.observe(viewLifecycleOwner, Observer { isQualityClicked->
+            if (isQualityClicked != null){
+                Toast.makeText(context, "ready to navigate $isQualityClicked", Toast.LENGTH_SHORT).show()
+                sleepQualityViewModel.doneNavigating()
+            }
+        })
 
 
         return binding.root
