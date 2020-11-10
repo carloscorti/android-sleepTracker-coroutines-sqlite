@@ -23,7 +23,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.trackmysleepquality.R
+import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityBinding
 
 /**
@@ -34,6 +36,8 @@ import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityB
  */
 class SleepQualityFragment : Fragment() {
 
+    private lateinit var sleepQualityViewModel: SleepQualityViewModel
+    private lateinit var sleepQualityViewModelFactory: SleepQualityViewModelFactory
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -48,8 +52,15 @@ class SleepQualityFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
+        var db = SleepDatabase.getInstance(application)
+
         val nightId = SleepQualityFragmentArgs.fromBundle(requireArguments()).sleepNightKey
         Toast.makeText(context, "night id is $nightId", Toast.LENGTH_SHORT).show()
+
+        sleepQualityViewModelFactory = SleepQualityViewModelFactory(nightId, db.sleepDatabaseDao)
+        sleepQualityViewModel = ViewModelProvider(this, sleepQualityViewModelFactory)
+                .get(SleepQualityViewModel::class.java)
+
 
         return binding.root
     }
