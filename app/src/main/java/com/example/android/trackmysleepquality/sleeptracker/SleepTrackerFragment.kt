@@ -84,7 +84,10 @@ class SleepTrackerFragment : Fragment() {
                     binding.stopButton.visibility = View.VISIBLE
                     binding.clearButton.visibility = View.GONE
                 }
+            })
 
+            clearButtonVisible.observe(viewLifecycleOwner, Observer {isClearButtonVisible ->
+                if (isClearButtonVisible) binding.clearButton.visibility = View.GONE
             })
         }
 

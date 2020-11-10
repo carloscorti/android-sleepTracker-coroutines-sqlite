@@ -41,6 +41,10 @@ class SleepTrackerViewModel(
         formatNights(nightsList, application.resources)
     }
 
+    var clearButtonVisible = Transformations.map(_allNights) { nightList ->
+        nightList.isEmpty()
+    }
+
     private val _startBtnVisible = MutableLiveData<Boolean>()
     val startBtnVisible: LiveData<Boolean>
         get() = _startBtnVisible
