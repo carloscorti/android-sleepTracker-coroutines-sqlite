@@ -61,21 +61,6 @@ class SleepTrackerFragment : Fragment() {
 
         binding.sleepTrackerViewModel = sleepTrackerViewModel
 
-        sleepTrackerViewModel.apply {
-            startBtnVisible.observe(viewLifecycleOwner, Observer {isStartVisible->
-                if (isStartVisible) {
-                    binding.startButton.visibility = View.VISIBLE
-                    binding.stopButton.visibility = View.GONE
-                    binding.clearButton.visibility = View.VISIBLE
-                } else if (!isStartVisible) {
-                    binding.startButton.visibility = View.GONE
-                    binding.stopButton.visibility = View.VISIBLE
-                    binding.clearButton.visibility = View.GONE
-                }
-
-            })
-        }
-
         return binding.root
     }
 }

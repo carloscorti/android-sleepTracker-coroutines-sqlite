@@ -41,52 +41,46 @@ class SleepTrackerViewModel(
         formatNights(nightsList, application.resources)
     }
 
-    private val _startBtnVisible = MutableLiveData<Boolean>()
-    val startBtnVisible: LiveData<Boolean>
-        get() = _startBtnVisible
+    private var tonight = MutableLiveData<SleepNight?>()
 
     init {
-        _startBtnVisible.value = true
+        initializeTonight()
+    }
+
+    private fun initializeTonight() {
+        coroutineScope.launch {
+            tonight.value = getTonight()
+        }
     }
 
     fun startSleepTrack() {
-//        viewModelScope.launch {
-//            insert(SleepNight())
-//        }
         coroutineScope.launch {
-            val night = withContext(this.coroutineContext) { getTonight() }
-            if (night == null || (night.startTimeMilli != night.endTimeMilli)) insert(SleepNight())
+            insert(SleepNight())
+            tonight.value = getTonight()
         }
-        _startBtnVisible.value = false
     }
 
     fun stopSleepTrack() {
         coroutineScope.launch {
-//            val nightReq = async { requireNotNull(getTonight()) }
-//            val night = nightReq.await()
-            // here getTonight is run in Default Threat
-//            val night = withContext(Dispatchers.Default) { requireNotNull(getTonight()) }
-            // the above same as next line
-            val night = withContext(this.coroutineContext) { getTonight() }
-
-            if (night!=null && night.startTimeMilli == night.endTimeMilli) {
-                night.endTimeMilli = System.currentTimeMillis()
-                update(night)
-            }
-            _startBtnVisible.value = true
+            val oldNight = tonight.value ?: return@launch
+            oldNight.endTimeMilli = System.currentTimeMillis()
+            update(oldNight)
         }
     }
 
     fun clearSleepsNights() {
         coroutineScope.launch {
             clearDataBaseNights()
+            tonight.value = null
         }
     }
 
-
     private suspend fun getTonight(): SleepNight? =
             withContext(Dispatchers.IO) {
-                val toNight = database.getTonight()
+                var toNight = database.getTonight()
+                if (toNight?.startTimeMilli != toNight?.endTimeMilli) {
+                    toNight = null
+                }
                 toNight
             }
 
@@ -104,8 +98,7 @@ class SleepTrackerViewModel(
             withContext(Dispatchers.IO) {
                 database.clear()
             }
-
-
+    
     override fun onCleared() {
         super.onCleared()
         coroutineScope.cancel()
