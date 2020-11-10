@@ -68,9 +68,11 @@ class SleepQualityFragment : Fragment() {
         binding.sleepQualityViewModel = sleepQualityViewModel
 
         sleepQualityViewModel.navigateToSleepTracker.observe(viewLifecycleOwner, Observer { isQualityClicked->
-            if (isQualityClicked != null){
-                Toast.makeText(context, "ready to navigate $isQualityClicked", Toast.LENGTH_SHORT).show()
-                sleepQualityViewModel.doneNavigating()
+            if (isQualityClicked == true){
+//                Toast.makeText(context, "ready to navigate $isQualityClicked", Toast.LENGTH_SHORT).show()
+//                sleepQualityViewModel.doneNavigating()
+                findNavController().navigate(SleepQualityFragmentDirections
+                        .actionSleepQualityFragmentToSleepTrackerFragment())
             }
         })
 

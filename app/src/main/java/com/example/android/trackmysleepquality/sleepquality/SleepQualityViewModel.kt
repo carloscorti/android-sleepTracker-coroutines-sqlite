@@ -34,9 +34,12 @@ class SleepQualityViewModel(private val database: SleepDatabaseDao,
         get() = _navigateToSleepTracker
 
     fun onSetSleepQuality(quality: Int) {
-        Log.i("cacQualityViewModel", "quality is $quality")
-
-        _navigateToSleepTracker.value = true
+        coroutineScope.launch {
+            val tonight = withContext(this.coroutineContext) { getTonight(nightId) } ?: return@launch
+            tonight.sleepQuality = quality
+            update(tonight)
+            _navigateToSleepTracker.value = true
+        }
     }
 
 
