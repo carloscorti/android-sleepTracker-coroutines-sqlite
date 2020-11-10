@@ -61,6 +61,10 @@ class SleepQualityFragment : Fragment() {
         sleepQualityViewModel = ViewModelProvider(this, sleepQualityViewModelFactory)
                 .get(SleepQualityViewModel::class.java)
 
+        binding.lifecycleOwner = this
+
+        binding.sleepQualityViewModel = sleepQualityViewModel
+
 
         return binding.root
     }
