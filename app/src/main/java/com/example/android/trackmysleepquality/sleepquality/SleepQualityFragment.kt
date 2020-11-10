@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.android.trackmysleepquality.R
@@ -46,6 +47,9 @@ class SleepQualityFragment : Fragment() {
                 inflater, R.layout.fragment_sleep_quality, container, false)
 
         val application = requireNotNull(this.activity).application
+
+        val nightId = SleepQualityFragmentArgs.fromBundle(requireArguments()).sleepNightKey
+        Toast.makeText(context, "night id is $nightId", Toast.LENGTH_SHORT).show()
 
         return binding.root
     }
