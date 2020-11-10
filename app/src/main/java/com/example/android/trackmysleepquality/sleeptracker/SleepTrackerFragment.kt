@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -61,13 +60,13 @@ class SleepTrackerFragment : Fragment() {
 
         binding.sleepTrackerViewModel = sleepTrackerViewModel
 
+        binding.startButton.visibility = View.VISIBLE
+        binding.stopButton.visibility = View.GONE
+        binding.clearButton.visibility = View.VISIBLE
+
         sleepTrackerViewModel.apply {
-            startBtnVisible.observe(viewLifecycleOwner, Observer {isStartVisible->
-                if (isStartVisible) {
-                    binding.startButton.visibility = View.VISIBLE
-                    binding.stopButton.visibility = View.GONE
-                    binding.clearButton.visibility = View.VISIBLE
-                } else if (!isStartVisible) {
+            startBtnVisible.observe(viewLifecycleOwner, Observer { isStartVisible ->
+                if (!isStartVisible) {
                     binding.startButton.visibility = View.GONE
                     binding.stopButton.visibility = View.VISIBLE
                     binding.clearButton.visibility = View.GONE
