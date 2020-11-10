@@ -54,7 +54,17 @@ class SleepTrackerViewModel(
         get() = _sleepTrackFinish
 
     init {
-        _startBtnVisible.value = true
+        _sleepTrackFinish.value = false
+
+        coroutineScope.launch {
+            val night = withContext(this.coroutineContext) { getTonight() }
+
+            if (night != null && night.startTimeMilli == night.endTimeMilli) {
+                _startBtnVisible.value = false
+                return@launch
+            }
+            _startBtnVisible.value = true
+        }
     }
 
     fun startSleepTrack() {
