@@ -45,6 +45,10 @@ class SleepTrackerViewModel(
     val startBtnVisible: LiveData<Boolean>
         get() = _startBtnVisible
 
+    private val _sleepTrackFinish = MutableLiveData<Boolean>()
+    val sleepTrackFinish: LiveData<Boolean>
+        get() = _sleepTrackFinish
+
     init {
         _startBtnVisible.value = true
     }
@@ -56,8 +60,8 @@ class SleepTrackerViewModel(
         coroutineScope.launch {
             val night = withContext(this.coroutineContext) { getTonight() }
             if (night == null || (night.startTimeMilli != night.endTimeMilli)) insert(SleepNight())
+            _startBtnVisible.value = false
         }
-        _startBtnVisible.value = false
     }
 
     fun stopSleepTrack() {
@@ -74,6 +78,7 @@ class SleepTrackerViewModel(
                 update(night)
             }
             _startBtnVisible.value = true
+            finishTrackChangeFragment()
         }
     }
 
@@ -105,6 +110,10 @@ class SleepTrackerViewModel(
                 database.clear()
             }
 
+    private fun finishTrackChangeFragment() {
+        _sleepTrackFinish.value = true
+        _sleepTrackFinish.value = false
+    }
 
     override fun onCleared() {
         super.onCleared()
