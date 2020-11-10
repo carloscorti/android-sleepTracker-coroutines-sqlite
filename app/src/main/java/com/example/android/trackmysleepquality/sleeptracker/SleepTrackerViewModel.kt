@@ -57,6 +57,10 @@ class SleepTrackerViewModel(
         it.isNotEmpty()
     }
 
+    private var _showSnackBarEvent = MutableLiveData<Boolean>()
+    val showSnackBarEvent: LiveData<Boolean>
+        get() = _showSnackBarEvent
+
     init {
         initializeTonight()
     }
@@ -87,10 +91,15 @@ class SleepTrackerViewModel(
         _navigateToSleepQuality.value = null
     }
 
+    fun doneShowingSnackbar() {
+        _showSnackBarEvent.value = false
+    }
+
     fun clearSleepsNights() {
         coroutineScope.launch {
             clearDataBaseNights()
             tonight.value = null
+            _showSnackBarEvent.value = true
         }
     }
 
