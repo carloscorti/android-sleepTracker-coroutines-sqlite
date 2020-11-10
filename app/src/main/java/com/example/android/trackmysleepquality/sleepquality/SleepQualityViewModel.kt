@@ -15,3 +15,18 @@
  */
 
 package com.example.android.trackmysleepquality.sleepquality
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class SleepQualityViewModel : ViewModel() {
+    private val _quality = MutableLiveData<Int>()
+    val quality: LiveData<Int>
+        get() = _quality
+
+    fun onQualityClicked(valueClicked: Int) {
+        _quality.value = valueClicked
+        _quality.value = null
+    }
+}
