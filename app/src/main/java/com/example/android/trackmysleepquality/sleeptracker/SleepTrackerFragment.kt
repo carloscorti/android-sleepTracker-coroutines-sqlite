@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -60,6 +61,13 @@ class SleepTrackerFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.sleepTrackerViewModel = sleepTrackerViewModel
+
+        if (SleepTrackerFragmentArgs.fromBundle(requireArguments()).sleepNightQuality != -1) {
+            Toast.makeText(context,
+                    "the quality is ${SleepTrackerFragmentArgs.fromBundle(requireArguments()).sleepNightQuality}",
+                    Toast.LENGTH_SHORT)
+                    .show()
+        }
 
         binding.startButton.visibility = View.VISIBLE
         binding.stopButton.visibility = View.GONE
