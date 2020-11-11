@@ -50,7 +50,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_button"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            tools:itemCount="20"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/list_item_sleep_night"
+            tools:orientation="vertical"
+            tools:scrollbars="vertical"
+            tools:spanCount="3" />
 
         <Button
             android:id="@+id/start_button"
