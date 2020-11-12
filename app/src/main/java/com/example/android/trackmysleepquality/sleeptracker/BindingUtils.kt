@@ -36,3 +36,11 @@ fun ImageView.setSleepImage(item: SleepNight?) {
         })
     }
 }
+
+@BindingAdapter("headerText")
+fun TextView.setHeaderText(header : DataItem.Header?) {
+    header?.let {
+//        text = "Sleep Nigthts Overview"
+        setText(R.string.header_text)
+    }
+}
