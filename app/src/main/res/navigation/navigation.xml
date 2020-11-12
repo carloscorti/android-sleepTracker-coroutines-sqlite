@@ -66,6 +66,8 @@
             app:argType="long" />
         <action
             android:id="@+id/action_sleep_Detail_Fragment_to_sleep_tracker_fragment"
-            app:destination="@id/sleep_tracker_fragment" />
+            app:destination="@id/sleep_tracker_fragment"
+            app:popUpTo="@id/sleep_tracker_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
